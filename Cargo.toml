@@ -9,12 +9,22 @@ authors = ["ykis-0-0"]
 [dependencies]
 qrcodegen = "1"
 rqrr = "0"
+ron = "0"
+
+# For console logging
+color-eyre = "0"
+eyre = "0"
 
 # For cli and input parsing
 [dependencies.clap]
 version = "4"
-features = ["derive"]
+features = ["derive", "cargo"]
 
 [dependencies.serde]
 version = "1"
 features = ["derive"]
+
+# [dependencies.confy]
+# version = "0"
+# default-features = false
+# features = ["ron_conf"]
