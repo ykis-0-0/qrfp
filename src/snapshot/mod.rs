@@ -5,7 +5,6 @@ mod segment;
 mod serde_compat;
 mod unchecked;
 
-#[cfg(test)]
 mod checks;
 
 use unchecked::QrfpSnapshotUnchecked;
@@ -20,7 +19,7 @@ struct QrfpSnapshot {
 impl TryFrom<QrfpSnapshotUnchecked> for QrfpSnapshot {
   type Error = eyre::Report;
 
-  fn try_from(source: QrfpSnapshotUnchecked) -> Result<Self, Self::Error> {
+  fn try_from(source: QrfpSnapshotUnchecked) -> Result<Self, Self::Error> /* = eResult<Self> */ {
     let version = source.try_version()?;
     let ec_level = source.get_eclevel();
     let mask = source.try_mask()?;
@@ -40,7 +39,14 @@ impl QrfpSnapshot {
     use qrcodegen::Version;
 
     let ecl = self.ec_level.unwrap_or(QrCodeEcc::Quartile);
-    let result = QrCode::encode_segments_advanced(&self.segments, ecl, self.version.unwrap_or(Version::MIN), self.version.unwrap_or(Version::MAX), self.mask, false);
+    let (vmax, vmin) = Option::zip(self.version, self.version).unwrap_or((Version::MIN, Version::MAX));
+
+    let result = QrCode::encode_segments_advanced(
+      &self.segments, ecl,
+      vmin, vmax,
+      self.mask,
+      false
+    );
 
     Ok(result?)
   }

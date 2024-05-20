@@ -1,6 +1,6 @@
-use eyre::bail;
 use qrcodegen::QrSegment;
 use serde::{Serialize, Deserialize};
+use eyre::bail;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub(super) enum QrfpSegmentDef {
@@ -39,7 +39,7 @@ impl TryFrom<&QrfpSegmentDef> for QrSegment {
 			QrfpSegmentDef::Numeric(source) => QrSegment::make_numeric(source),
 			QrfpSegmentDef::Alphanumeric(source) => QrSegment::make_alphanumeric(source),
 			QrfpSegmentDef::Byte(bytes) => QrSegment::make_bytes(bytes),
-			QrfpSegmentDef::Kanji(source) => unimplemented!("Kanji yet to be supported"),
+			QrfpSegmentDef::Kanji(_/* string */) => unimplemented!("Kanji yet to be supported"),
 			QrfpSegmentDef::Eci(cp) => QrSegment::make_eci(*cp),
 		};
 
